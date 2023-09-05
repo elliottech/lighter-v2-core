@@ -1,7 +1,11 @@
 {
-  "name": "lighter-v2-core",
+  "name": "@elliottech/lighter-v2-core",
   "description": "Lighter V2 Core Smart Contracts",
-  "version": "2.0.0",
+  "license": "BUSL-1.1",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "1.0.0",
   "homepage": "https://lighter.xyz",
   "keywords": [
     "lighter",
@@ -11,8 +15,18 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/elliottech/lighter-v2-dev"
+    "url": "https://github.com/elliottech/lighter-v2-core"
   },
+  "files": [
+    "contracts/interfaces",
+    "contracts/libraries",
+    "artifacts/contracts/Factory.sol/Factory.json",
+    "artifacts/contracts/OrderBook.sol/OrderBook.json",
+    "artifacts/contracts/interfaces/**/*.json",
+    "!artifacts/contracts/interfaces/**/*.dbg.json",
+    "artifacts/contracts/libraries/**/*.json",
+    "!artifacts/contracts/libraries/**/*.dbg.json"
+  ],
   "engines": {
     "node": ">=10"
   },
@@ -47,18 +61,17 @@
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
     "typechain": "^8.1.0",
-    "typescript": "^4.7.4"
-  },
-  "dependencies": {
-    "@openzeppelin/contracts": "^4.7.1",
+    "typescript": "^4.7.4",
     "axios": "^0.27.2",
     "coingecko-api": "^1.0.10",
     "ethereum-waffle": "^4.0.10",
     "hardhat-gas-reporter": "^1.0.8",
-    "husky": "^8.0.3",
     "mocha-chai-jest-snapshot": "^1.1.4",
     "pre-commit": "^1.2.2",
     "solidity-coverage": "^0.7.21",
     "solmate": "^6.1.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.7.1"
   }
 }
