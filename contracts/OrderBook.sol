@@ -328,11 +328,8 @@ contract OrderBook is IOrderBook, ReentrancyGuard {
             );
         }
 
-        // If the order is not fully filled, set remaining alues in newOrder and insert it into respective order book
-        if (
-            (orderType == OrderType.LimitOrder || orderType == OrderType.PerformanceLimitOrder) &&
-            newOrder.amount0Base > 0
-        ) {
+        // If the order is not fully filled, set remaining value in newOrder and insert it into respective order book
+        if (remainingLimitOrderAmount > 0) {
             // Get the ownerId if exists, otherwise set the ownerId using the from address
             newOrder.ownerId = addressToOwnerId[owner];
             if (newOrder.ownerId == 0) {
