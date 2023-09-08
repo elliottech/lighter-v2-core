@@ -233,10 +233,10 @@ export async function deployContractsWithMaliciousTokens() {
   const acc1 = await deploySmartWallet(factory)
   const acc2 = await deploySmartWallet(factory)
 
-  token_weth.setExceptionAddress(acc1.address)
-  token_usdc.setExceptionAddress(acc1.address)
-  token_wbtc.setExceptionAddress(acc1.address)
-  token_link.setExceptionAddress(acc1.address)
+  await token_weth.setExceptionAddress(acc1.address)
+  await token_usdc.setExceptionAddress(acc1.address)
+  await token_wbtc.setExceptionAddress(acc1.address)
+  await token_link.setExceptionAddress(acc1.address)
 
   return {
     token_weth,

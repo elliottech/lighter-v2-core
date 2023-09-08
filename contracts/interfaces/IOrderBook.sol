@@ -166,12 +166,12 @@ interface IOrderBook {
     /// @param isToken0 Whether the claimable token is token0 or token1
     function claimToken(uint256 amountToClaim, bool isToken0) external;
 
-    /// @notice Finds the order id to the left of where the new order should be inserted.
+    /// @notice Finds the order id where the new order should be inserted to the right of
     /// Meant to be used off-chain to find the hintId for limit order creation functions
     /// @param priceBase basePrice derived from amount0Base and amount1Base
     /// @param isAsk Whether the new order is an ask order
-    /// @return hintId The id of the order to the left of where the new order
-    /// should be inserted
+    /// @return hintId The id of the order where the new order
+    /// should be inserted to the right of
     function suggestHintId(uint64 priceBase, bool isAsk) external view returns (uint32);
 
     /// @notice Returns the amount of token0 and token1 to traded between two limit orders

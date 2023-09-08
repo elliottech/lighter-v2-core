@@ -20,12 +20,12 @@ describe('Factory contract', function () {
   let DAI: Contract
 
   async function deploy() {
-    let testERC20_factory = await ethers.getContractFactory('TestERC20')
+    let testERC20_factory = await ethers.getContractFactory('TestERC20Token')
 
-    WETH = await testERC20_factory.deploy('WETH token', 'WETH')
-    WBTC = await testERC20_factory.deploy('WBTC token', 'WBTC')
-    USDC = await testERC20_factory.deploy('USDC token', 'USDC')
-    DAI = await testERC20_factory.deploy('DAI token', 'DAI')
+    WETH = await testERC20_factory.deploy('WETH token', 'WETH', 18)
+    WBTC = await testERC20_factory.deploy('WBTC token', 'WBTC', 8)
+    USDC = await testERC20_factory.deploy('USDC token', 'USDC', 6)
+    DAI = await testERC20_factory.deploy('DAI token', 'DAI', 18)
     ;[owner, acc1] = await ethers.getSigners()
     ;({factory} = await deployFactory(owner))
   }
@@ -133,7 +133,6 @@ describe('Factory contract', function () {
     expect(details.token0).to.equal(orderBookArguments.token0)
     expect(details.token1).to.equal(orderBookArguments.token1)
     expect(details.sizeTick).to.equal(10 ** orderBookArguments.logSizeTick)
-    //expect(details.priceMultiplier).to.equal(orderBookArguments.logPriceTick);
   })
 
   it('gets the order book details from a given token pair successfully', async function () {
@@ -146,7 +145,6 @@ describe('Factory contract', function () {
     expect(details.token0).to.equal(orderBookArguments.token0)
     expect(details.token1).to.equal(orderBookArguments.token1)
     expect(details.sizeTick).to.equal(10 ** orderBookArguments.logSizeTick)
-    //expect(details.priceMultiplier).to.equal(orderBookArguments.logPriceTick);
   })
 
   it('gets all order book details', async function () {

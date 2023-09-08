@@ -70,7 +70,7 @@ export async function CreateFoKOrder(
   }
 ) {
   const s = await prepareOrders(orderBook, [{...orders, hintId: 0}])
-  return wallet.createFillOrKillOrder(s.orderBookId, s.amount0Base[0], s.priceBase[0], s.isAsk[0])
+  return wallet.createFoKOrder(s.orderBookId, s.amount0Base[0], s.priceBase[0], s.isAsk[0])
 }
 
 export async function CreateIoCOrder(
@@ -83,7 +83,7 @@ export async function CreateIoCOrder(
   }
 ) {
   const s = await prepareOrders(orderBook, [{...orders, hintId: 0}])
-  return wallet.createImmediateOrCancelOrder(s.orderBookId, s.amount0Base[0], s.priceBase[0], s.isAsk[0])
+  return wallet.createIoCOrder(s.orderBookId, s.amount0Base[0], s.priceBase[0], s.isAsk[0])
 }
 
 export async function CancelLimitOrder(wallet: SmartWallet, orderBook: OrderBook, orderIDs: BigNumberish[]) {

@@ -292,7 +292,7 @@ contract OrderBook is IOrderBook, ReentrancyGuard {
         );
         // Short circuit payments if Fill or Kill order is not fully filled and needs to be killed
         if (orderType == OrderType.FoKOrder && newOrder.amount0Base > 0) {
-            revert Errors.LighterV2Order_FillOrKillOrder_NotFilled();
+            revert Errors.LighterV2Order_FoKNotFilled();
         }
 
         // Computes the amount caller needs to pay for remaning part of their limit order

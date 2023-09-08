@@ -113,11 +113,11 @@ library LinkedListLib {
         paginatedOrders.isAsk = isAsk;
     }
 
-    /// @notice Find the order id to the right of where an order with given priceBase should be inserted.
+    /// @notice Finds the order id where the order with given price should be inserted to the right of
     /// @param priceBase The priceBase to suggest the hintId for
+    /// @return hintId The order id where the order with given price should be inserted to the right of
     function suggestHintId(LinkedList storage self, uint64 priceBase, bool isAsk) public view returns (uint32) {
         mapping(uint32 => IOrderBook.LimitOrder) storage orders = isAsk ? self.asks : self.bids;
-        // left of where the new order should be inserted.
         uint32 hintOrderId = 0;
         IOrderBook.LimitOrder memory hintOrder = orders[hintOrderId];
         while (hintOrderId != 1) {

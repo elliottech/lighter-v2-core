@@ -3,12 +3,12 @@ import {expect, ParseUSDC, ParseWETH, CreateFoKOrder, CreateIoCOrder} from './sh
 import {reportGasCost} from 'reports'
 import {setupFixturesForSmartWallet} from './default-fixture'
 
-describe('benchmark IOC & FOK order', () => {
+describe('benchmark IoC & FoK order', () => {
   describe('Ask; 2 full 1 one partial match', () => {
-    it('IOC', async () => {
+    it('IoC', async () => {
       await test(CreateIoCOrder, 'IOC_ASK_CREATE_2.5_FILLS')
     })
-    it('FOK', async () => {
+    it('FoK', async () => {
       await test(CreateFoKOrder, 'FOK_ASK_CREATE_2.5_FILLS')
     })
 
@@ -26,10 +26,10 @@ describe('benchmark IOC & FOK order', () => {
     }
   })
   describe('Bid; 2 full 1 one partial match', () => {
-    it('IOC', async () => {
+    it('IoC', async () => {
       await test(CreateIoCOrder, 'IOC_CREATE_2.5_FILLS')
     })
-    it('FOK', async () => {
+    it('FoK', async () => {
       await test(CreateFoKOrder, 'FOK_CREATE_2.5_FILLS')
     })
 
@@ -46,10 +46,10 @@ describe('benchmark IOC & FOK order', () => {
     }
   })
   describe('Bid; 3 full matches and not enough liquidity', () => {
-    it('IOC', async () => {
+    it('IoC', async () => {
       await test(CreateIoCOrder, 'IOC_CREATE_3_FILLS', false)
     })
-    it('FOK revoked', async () => {
+    it('FoK revoked', async () => {
       await test(CreateFoKOrder, '', true)
     })
 
@@ -65,7 +65,7 @@ describe('benchmark IOC & FOK order', () => {
       }
 
       if (revert) {
-        await expect(g()).to.be.revertedWithCustomError(orderBook, 'LighterV2Order_FillOrKillOrder_NotFilled')
+        await expect(g()).to.be.revertedWithCustomError(orderBook, 'LighterV2Order_FoKNotFilled')
       } else {
         const tx = await g()
         await expect(tx).to.changeTokenBalance(weth, acc1.address, ParseWETH('3.75'))
@@ -74,10 +74,10 @@ describe('benchmark IOC & FOK order', () => {
     }
   })
   describe('Bid; 2 full matcher; matches on equal price', () => {
-    it('IOC', async () => {
+    it('IoC', async () => {
       await test(CreateIoCOrder, 'IOC_CREATE_2_FILLS')
     })
-    it('FOK', async () => {
+    it('FoK', async () => {
       await test(CreateFoKOrder, 'FOK_CREATE_2_FILLS')
     })
 

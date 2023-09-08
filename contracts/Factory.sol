@@ -2,7 +2,7 @@
 pragma solidity 0.8.18;
 
 import "./libraries/Errors.sol";
-import "./libraries/OrderBookDeployerLib.sol";
+import "./libraries/OrderBookDeployer.sol";
 import "./interfaces/IFactory.sol";
 
 /// @title Factory

@@ -62,7 +62,7 @@ library Errors {
     error LighterV2Order_InsufficientClaimableBalance();
 
     /// @notice Thrown when FillOrKill order is not fully filled
-    error LighterV2Order_FillOrKillOrder_NotFilled();
+    error LighterV2Order_FoKNotFilled();
 
     /// @notice Thrown when contract balance decrease is larger than the transfered amount
     error LighterV2Base_ContractBalanceDoesNotMatchSentAmount();
