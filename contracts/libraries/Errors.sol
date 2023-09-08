@@ -43,6 +43,9 @@ library Errors {
     /// @notice Thrown when given price is too small in order creation
     error LighterV2Order_PriceTooSmall();
 
+    /// @notice Thrown when given price is too big in order creation
+    error LighterV2Order_PriceTooBig();
+
     /// @notice Thrown when token0 or token1 amount is too small in limit order creation
     error LighterV2Order_AmountTooSmall();
 

@@ -5,7 +5,6 @@ import {
   CreateLimitOrder,
   ParseUSDC,
   ParseWETH,
-  CreateFoKOrder,
   CreateIoCOrder,
 } from 'test/shared'
 import {loadFixture} from '@nomicfoundation/hardhat-network-helpers'
@@ -15,6 +14,7 @@ import {
   setupFixturesForSmartWalletWithMaliciousTokens,
 } from './default-fixture'
 import {reportGasCost} from 'reports'
+import {BigNumber} from "ethers";
 
 describe('limit orders', () => {
   async function expectInitialState(s: any) {
@@ -38,6 +38,24 @@ describe('limit orders', () => {
       },
     ])
   }
+
+  it('reverts when price is too small', async () => {
+    const {acc1, orderBook} = await loadFixture(setupEmptyBookFixturesForSmartWallet)
+
+    await expect(acc1.createLimitOrder(0, 1, [200], [1], [true], [0])).to.be.revertedWithCustomError(
+      orderBook,
+      'LighterV2Order_PriceTooSmall'
+    )
+  })
+
+  it('reverts when price is too big', async () => {
+    const {acc1, orderBook} = await loadFixture(setupEmptyBookFixturesForSmartWallet)
+    const maxUint64 = BigNumber.from(2).pow(64).sub(1)
+    await expect(acc1.createLimitOrder(0, 1, [200], [maxUint64], [true], [0])).to.be.revertedWithCustomError(
+      orderBook,
+      'LighterV2Order_PriceTooBig'
+    )
+  })
 
   describe('creating', () => {
     describe('creating orders locks funds in order book', () => {

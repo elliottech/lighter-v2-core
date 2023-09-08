@@ -15,6 +15,25 @@ interface IOrderBook {
         IoCOrder // Immediate or Cancel limit order
     }
 
+    /// @notice Struct to use for storing limit orders
+    struct LimitOrder {
+        uint32 perfMode_creatorId; // lowest bit for perfMode, remaining 31 bits for creatorId
+        uint32 prev; // id of the previous order in the list
+        uint32 next; // id of the next order in the list
+        uint32 ownerId; // id of the owner of the order
+        uint64 amount0Base; // amount0Base of the order
+        uint64 priceBase; // priceBase of the order
+    }
+
+    /// @notice Struct to use returning the paginated orders
+    struct OrderQueryItem {
+        bool isAsk; // true if the paginated orders are ask orders, false if bid orders
+        uint32[] ids; // order ids of returned orders
+        address[] owners; // owner addresses of returned orders
+        uint256[] amount0s; // amount0s of returned orders (amount0Base * sizeTick)
+        uint256[] prices; // prices of returned orders (priceBase * priceTick)
+    }
+
     /// @notice Emitted when a limit order gets created
     /// @param owner The address of the order owner
     /// @param id The id of the order

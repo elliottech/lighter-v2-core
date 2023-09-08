@@ -67,9 +67,7 @@ interface IFactory {
     /// @return orderBooksDetails OrderBookDetails[] array containing the details for all order books
     function getAllOrderBooksDetails() external view returns (OrderBookDetails[] memory);
 
-    /// @notice Returns the address of the order book for a given token pair,
-    /// or address 0 if it does not exist
-    /// @dev token0 and token1 may be passed in either order
+    /// @notice Returns the address of the order book for a given token pair, or address 0 if it does not exist
     /// @param token0 The contract address the first token
     /// @param token1 The contract address the second token
     /// @return orderBookAddress The address of the order book
@@ -81,7 +79,6 @@ interface IFactory {
     function getOrderBookFromId(uint8 orderBookId) external view returns (address);
 
     /// @notice Returns the details of the order book for a given token pair
-    /// @dev token0 and token1 may be passed in either order
     /// @param token0 The first token of the order book
     /// @param token1 The second token of the order book
     /// @return orderBookDetails the details of the order book

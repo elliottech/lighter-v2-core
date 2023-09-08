@@ -7,11 +7,6 @@ describe('OrderBook contract, tick size', function () {
   it('reverts when minimum amounts does not satisfied', async function () {
     const {acc1, orderBook} = await loadFixture(setupEmptyBookFixturesForSmartWallet)
 
-    await expect(acc1.createLimitOrder(0, 1, [90], [1], [true], [0])).to.be.revertedWithCustomError(
-      orderBook,
-      'LighterV2Order_PriceTooSmall'
-    )
-
     await expect(acc1.createLimitOrder(0, 1, [90], [10], [true], [0])).to.be.revertedWithCustomError(
       orderBook,
       'LighterV2Order_AmountTooSmall'

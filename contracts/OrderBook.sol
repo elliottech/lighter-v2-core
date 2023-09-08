@@ -33,6 +33,8 @@ contract OrderBook is IOrderBook, ReentrancyGuard {
     /// that call the order book and implements the callback interfaces
     uint32 public constant CREATOR_ID_THRESHOLD = (1 << 31) - 1;
 
+    uint64 public constant MAX_PRICE = type(uint64).max;
+
     // Using the LinkedListLib for order management
     using LinkedListLib for LinkedList;
 
@@ -198,7 +200,7 @@ contract OrderBook is IOrderBook, ReentrancyGuard {
             perfMode_creatorId: 0,
             ownerId: 1,
             amount0Base: 0,
-            priceBase: type(uint64).max
+            priceBase: MAX_PRICE
         });
         // Create the head node for bids linked list, this node can not be deleted
         _orders.bids[0] = LimitOrder({
@@ -207,7 +209,7 @@ contract OrderBook is IOrderBook, ReentrancyGuard {
             perfMode_creatorId: 0,
             ownerId: 1,
             amount0Base: 0,
-            priceBase: type(uint64).max
+            priceBase: MAX_PRICE
         });
         // Create the tail node for bids linked list, this node can not be deleted
         _orders.bids[1] = LimitOrder({
@@ -238,10 +240,19 @@ contract OrderBook is IOrderBook, ReentrancyGuard {
         if (amount0Base == 0) {
             revert Errors.LighterV2Order_AmountTooSmall();
         }
-        // priceBase needs to be at least priceDivider, this guarantees that for non-zero amount0Base, amount1 will be at least 1
-        // priceDivider is guaranteed to be at least 1, thus error is always thrown if priceBase = 0
+
+        // priceBase needs to be at least priceDivider
+        // this guarantees that any increase of amount0Base will increase amount1 by at least 1
+        // as priceDivider is guaranteed to be at least 1, an error is always thrown if priceBase = 0,
+        // which is reserved for the dummy order with id 0
         if (priceBase < priceDivider) {
             revert Errors.LighterV2Order_PriceTooSmall();
+        }
+
+        // do not allow orders with the max price, as the price is reserved for the big dummy order.
+        // this is required so no order is inserted after the dummy order with id 1
+        if (priceBase == MAX_PRICE) {
+            revert Errors.LighterV2Order_PriceTooBig();
         }
 
         if (orderType == OrderType.LimitOrder || orderType == OrderType.PerformanceLimitOrder) {
@@ -722,14 +733,14 @@ contract OrderBook is IOrderBook, ReentrancyGuard {
             if (bestMatch.amount0Base == matchOrderLocalVars.makerAmount0BaseChange) {
                 // Remove the best bid from the order book if it is fully filled
                 matchOrderLocalVars.atLeastOneFullSwap = true;
-                makerOrders[matchOrderLocalVars.index].ownerId = 0;
+                bestMatch.ownerId = 0;
             } else {
                 // Update the best bid if it is partially filled
                 bestMatch.amount0Base -= matchOrderLocalVars.makerAmount0BaseChange;
                 break;
             }
 
-            matchOrderLocalVars.index = makerOrders[matchOrderLocalVars.index].next;
+            matchOrderLocalVars.index = bestMatch.next;
             if (matchOrderLocalVars.fullTakerFill) {
                 // Break before updating the amount, if taker specifies exactOutput taker will receive largest
                 // amount of output tokens they can buy with same input needed for exactOutput. Amount can be
