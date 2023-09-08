@@ -43,6 +43,9 @@ library Errors {
     /// @notice Thrown when given price is too small in order creation
     error LighterV2Order_PriceTooSmall();
 
+    /// @notice Thrown when given price is too big in order creation
+    error LighterV2Order_PriceTooBig();
+
     /// @notice Thrown when token0 or token1 amount is too small in limit order creation
     error LighterV2Order_AmountTooSmall();
 
@@ -59,7 +62,7 @@ library Errors {
     error LighterV2Order_InsufficientClaimableBalance();
 
     /// @notice Thrown when FillOrKill order is not fully filled
-    error LighterV2Order_FillOrKillOrder_NotFilled();
+    error LighterV2Order_FoKNotFilled();
 
     /// @notice Thrown when contract balance decrease is larger than the transfered amount
     error LighterV2Base_ContractBalanceDoesNotMatchSentAmount();

@@ -65,7 +65,7 @@ describe('benchmark IOC & FOK order', () => {
       }
 
       if (revert) {
-        await expect(g()).to.be.revertedWithCustomError(orderBook, 'LighterV2Order_FillOrKillOrder_NotFilled')
+        await expect(g()).to.be.revertedWithCustomError(orderBook, 'LighterV2Order_FoKNotFilled')
       } else {
         const tx = await g()
         await expect(tx).to.changeTokenBalance(weth, acc1.address, ParseWETH('3.75'))

@@ -52,7 +52,7 @@ describe('OrderBook contract, tick size', function () {
 
     await expect(
       acc2.createFillOrKillOrder(0, fillOrKillOrder_amount0Base, fillOrKillOrder_priceBase, true)
-    ).to.be.revertedWithCustomError(orderBook, 'LighterV2Order_FillOrKillOrder_NotFilled')
+    ).to.be.revertedWithCustomError(orderBook, 'LighterV2Order_FoKNotFilled')
 
     tx = acc1.createLimitOrder(0, 1, [105], [191], [false], [2]) // sells 2005.5 token1
     await expect(tx).to.changeTokenBalance(token1, acc1.address, -2005)
