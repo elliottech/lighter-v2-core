@@ -7,6 +7,11 @@ describe('OrderBook contract, tick size', function () {
   it('reverts when minimum amounts does not satisfied', async function () {
     const {acc1, orderBook} = await loadFixture(setupEmptyBookFixturesForSmartWallet)
 
+    await expect(acc1.createLimitOrder(0, 1, [90], [1], [true], [0])).to.be.revertedWithCustomError(
+      orderBook,
+      'LighterV2Order_PriceTooSmall'
+    )
+
     await expect(acc1.createLimitOrder(0, 1, [90], [10], [true], [0])).to.be.revertedWithCustomError(
       orderBook,
       'LighterV2Order_AmountTooSmall'
@@ -36,26 +41,25 @@ describe('OrderBook contract, tick size', function () {
     tx = acc1.createLimitOrder(0, 1, [117], [184], [false], [0]) // sells 2152.8 token1
     await expect(tx).to.changeTokenBalance(token1, acc1.address, -2152)
 
-    // should revert the FoK order
+    // should revert the FillOrKillOrder
 
     // taker expects amount0Base: 100 at spotBasePx: 300 where they offer token1
     // match with 1st best limit-order (ask) will match and fill amount0Base: 100
     // match with 1st best limit-order (ask) will match and fill amount0Base: 100
 
-    const fok_amount0Base = 221
-    const fok_priceBase = 183
+    const fillOrKillOrder_amount0Base = 221
+    const fillOrKillOrder_priceBase = 183
 
-    await expect(acc2.createFoKOrder(0, fok_amount0Base, fok_priceBase, true)).to.be.revertedWithCustomError(
-      orderBook,
-      'LighterV2Order_FoKNotFilled'
-    )
+    await expect(
+      acc2.createFillOrKillOrder(0, fillOrKillOrder_amount0Base, fillOrKillOrder_priceBase, true)
+    ).to.be.revertedWithCustomError(orderBook, 'LighterV2Order_FoKNotFilled')
 
     tx = acc1.createLimitOrder(0, 1, [105], [191], [false], [2]) // sells 2005.5 token1
     await expect(tx).to.changeTokenBalance(token1, acc1.address, -2005)
 
-    // should not revert the FoK order
+    // should not revert the FillOrKillOrder
     // [0] -> 4 -> 3 -> [1]
-    tx = acc2.createFoKOrder(0, fok_amount0Base, fok_priceBase, true) // buy 4044.3 token1
+    tx = acc2.createFillOrKillOrder(0, fillOrKillOrder_amount0Base, fillOrKillOrder_priceBase, true) // buy 4044.3 token1
 
     // want to sell 221 token0
     // first matches with limitOrder3 and then with limitOrder2
@@ -92,25 +96,25 @@ describe('OrderBook contract, tick size', function () {
     await expect(tx).to.changeTokenBalance(token1, acc1.address, -7125)
 
     // partial fill 1
-    tx = acc2.createIoCOrder(0, 139, 10, true) // buys 1264.9 token1
+    tx = acc2.createImmediateOrCancelOrder(0, 139, 10, true) // buys 1264.9 token1
     await expect(tx) //
       .to.changeTokenBalance(token1, acc2.address, +1264)
       .to.changeTokenBalance(token0, acc2.address, ParseWETHBase(-139))
 
     // partial fill 2
-    tx = acc2.createIoCOrder(0, 129, 10, true) // buys 1173.9 token1
+    tx = acc2.createImmediateOrCancelOrder(0, 129, 10, true) // buys 1173.9 token1
     await expect(tx) //
       .to.changeTokenBalance(token1, acc2.address, +1173)
       .to.changeTokenBalance(token0, acc2.address, ParseWETHBase(-129))
 
     // partial fill 3
-    tx = acc2.createIoCOrder(0, 119, 10, true) // buys 1082.9 token1
+    tx = acc2.createImmediateOrCancelOrder(0, 119, 10, true) // buys 1082.9 token1
     await expect(tx) //
       .to.changeTokenBalance(token1, acc2.address, +1082)
       .to.changeTokenBalance(token0, acc2.address, ParseWETHBase(-119))
 
     // match against the whole order
-    tx = acc2.createIoCOrder(0, 1000, 10, true) // buys 3603.6 token1
+    tx = acc2.createImmediateOrCancelOrder(0, 1000, 10, true) // buys 3603.6 token1
     await expect(tx) //
       .to.changeTokenBalance(token1, acc2.address, +3603)
       .to.changeTokenBalance(token0, acc2.address, ParseWETHBase(-396))

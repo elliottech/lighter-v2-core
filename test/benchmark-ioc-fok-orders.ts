@@ -3,12 +3,12 @@ import {expect, ParseUSDC, ParseWETH, CreateFoKOrder, CreateIoCOrder} from './sh
 import {reportGasCost} from 'reports'
 import {setupFixturesForSmartWallet} from './default-fixture'
 
-describe('benchmark IoC & FoK order', () => {
+describe('benchmark IOC & FOK order', () => {
   describe('Ask; 2 full 1 one partial match', () => {
-    it('IoC', async () => {
+    it('IOC', async () => {
       await test(CreateIoCOrder, 'IOC_ASK_CREATE_2.5_FILLS')
     })
-    it('FoK', async () => {
+    it('FOK', async () => {
       await test(CreateFoKOrder, 'FOK_ASK_CREATE_2.5_FILLS')
     })
 
@@ -26,10 +26,10 @@ describe('benchmark IoC & FoK order', () => {
     }
   })
   describe('Bid; 2 full 1 one partial match', () => {
-    it('IoC', async () => {
+    it('IOC', async () => {
       await test(CreateIoCOrder, 'IOC_CREATE_2.5_FILLS')
     })
-    it('FoK', async () => {
+    it('FOK', async () => {
       await test(CreateFoKOrder, 'FOK_CREATE_2.5_FILLS')
     })
 
@@ -46,10 +46,10 @@ describe('benchmark IoC & FoK order', () => {
     }
   })
   describe('Bid; 3 full matches and not enough liquidity', () => {
-    it('IoC', async () => {
+    it('IOC', async () => {
       await test(CreateIoCOrder, 'IOC_CREATE_3_FILLS', false)
     })
-    it('FoK revoked', async () => {
+    it('FOK revoked', async () => {
       await test(CreateFoKOrder, '', true)
     })
 
@@ -74,10 +74,10 @@ describe('benchmark IoC & FoK order', () => {
     }
   })
   describe('Bid; 2 full matcher; matches on equal price', () => {
-    it('IoC', async () => {
+    it('IOC', async () => {
       await test(CreateIoCOrder, 'IOC_CREATE_2_FILLS')
     })
-    it('FoK', async () => {
+    it('FOK', async () => {
       await test(CreateFoKOrder, 'FOK_CREATE_2_FILLS')
     })
 
