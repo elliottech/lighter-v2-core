@@ -288,6 +288,7 @@ contract OrderBook is IOrderBook, ReentrancyGuard {
         (uint256 filledAmount0, uint256 filledAmount1, uint32 swapCount, SwapData[] memory swaps) = _matchOrder(
             newOrder,
             newOrderId,
+            owner,
             isAsk
         );
         // Short circuit payments if Fill or Kill order is not fully filled and needs to be killed
@@ -539,6 +540,7 @@ contract OrderBook is IOrderBook, ReentrancyGuard {
     function _matchOrder(
         LimitOrder memory order,
         uint32 orderId,
+        address owner,
         bool isAsk
     ) internal returns (uint256, uint256, uint32, SwapData[] memory) {
         MatchOrderLocalVars memory matchOrderLocalVars;
@@ -569,7 +571,7 @@ contract OrderBook is IOrderBook, ReentrancyGuard {
                 emit Swap(
                     orderId,
                     matchOrderLocalVars.index,
-                    msg.sender,
+                    owner,
                     matchOrderLocalVars.makerAddress,
                     matchOrderLocalVars.swapAmount0,
                     matchOrderLocalVars.swapAmount1
@@ -579,7 +581,7 @@ contract OrderBook is IOrderBook, ReentrancyGuard {
                     matchOrderLocalVars.index,
                     orderId,
                     matchOrderLocalVars.makerAddress,
-                    msg.sender,
+                    owner,
                     matchOrderLocalVars.swapAmount0,
                     matchOrderLocalVars.swapAmount1
                 );
