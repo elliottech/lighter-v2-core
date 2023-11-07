@@ -5,17 +5,17 @@
 Lighter is fully decentralized order book exchange protocol designed for permission-less, zero slippage and MEV-protected trades.
 
 Core contracts make up the Lighter Exchange's foundation. They are composed of the Factory and an Order Book for each supported
-token pair. At the moment, only the Lighter team is able to deploy new token pairs. 
+token pair. At the moment, only the Lighter governance which is run by Lighter team is able to deploy new token pairs. 
 
 
 ## Factory
 The Factory contract handles creating Order Books. Users can tap into the Factory contract to find out about different order books or to grab the order book for a specific token pair.
 
 ## Order Book
-Each supported pair gets its own Order Book contract. 
-This contract holds the money for open orders and takes care of pairing up and finishing trades. 
-Users can work directly with an order book, but they have to go through a smart contract that uses a payment interface. 
-Plus, going straight to the order book lets users do flash-loans.
+Each supported pair gets its own Order Book contract.
+This contract stores the data and ERC-20 tokens for open orders, and implements the matching engine that is used when matching crossing orders.
+Users can interact directly with Order Book contracts, but the interaction should go through a smart contract that implements the payment interface.
+Also, interacting directly with the order book allows users do zero fee flash-loans.
 
 The order book support 4 order types:
 - Limit Order
